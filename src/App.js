@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Navbar, Container } from 'react-bootstrap';
+import { Routes, Route } from 'react-router-dom';
+import PodcastList from './components/PodcastList';
+import EpisodeList from './components/EpisodeList';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+const App = () => {
+  const [podcasts] = useState([]);
+  const [searchTerm] = useState();
+
+  //   const navigate = useNavigate();
+
+  //   const handleSearch = (searchTerm) => {
+  //     setSearchTerm(searchTerm);
+  //   };
+
+  const filteredPodcasts = podcasts.filter((podcast) =>
+    podcast.title.label.includes(searchTerm.toLowerCase())
   );
-}
+
+  return (
+    <>
+      <Navbar bg="light" expand="lg">
+        <Container>
+          <Navbar.Brand href="/">Top Podcasts</Navbar.Brand>
+        </Container>
+      </Navbar>
+
+      <Container>
+        <Routes>
+          <Route
+            path="*"
+            element={<PodcastList podcasts={filteredPodcasts} />}
+          />
+          <Route path="podcast/:trackId" element={<EpisodeList />} />
+        </Routes>
+      </Container>
+    </>
+  );
+};
 
 export default App;
