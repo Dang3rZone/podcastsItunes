@@ -15,11 +15,16 @@ const PodcastList = () => {
   useEffect(() => {
     const fetchPodcasts = async () => {
       const response = await fetch(
-        'https://itunes.apple.com/search?term=podcast&country=US&limit=100'
+        `https://api.allorigins.win/get?url=${encodeURIComponent(
+          'https://itunes.apple.com/search?term=podcast&country=US&limit=100'
+        )}`
       );
+
       const data = await response.json();
-      setPodcasts(data.results);
-      //   console.log(data);
+      const prettyData = data.contents.replace(/\n/g, '');
+      const prettyToJSON = JSON.parse(prettyData);
+
+      setPodcasts(prettyToJSON.results);
     };
 
     fetchPodcasts();
