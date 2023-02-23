@@ -4,7 +4,7 @@ import { Link, useNavigate, Route, Routes, useParams } from 'react-router-dom';
 import EpisodeList from './EpisodeList';
 
 const PodcastList = () => {
-  const history = useNavigate();
+  //   const history = useNavigate();
   const [podcasts, setPodcasts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const { trackId } = useParams();
