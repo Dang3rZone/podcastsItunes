@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Spinner, Row, Col, Card, Container } from 'react-bootstrap';
+import { Spinner, Row, Col, Card, Container, Badge } from 'react-bootstrap';
 import xml2js from 'xml2js';
 
 const ONE_DAY = 24 * 60 * 60 * 1000; // milliseconds in one day
@@ -117,6 +117,9 @@ const EpisodesList = () => {
               </Card>
             </Col>
             <Col md={8}>
+              <h3>
+                Episodes <Badge bg="success">{episodes.length}</Badge>
+              </h3>
               {episodesToShow.map((episode, index) => (
                 <Card key={index}>
                   <Card.Body>
@@ -130,6 +133,10 @@ const EpisodesList = () => {
                             .slice(0, 250)}...`
                         : episode.description[0].replace(/(<([^>]+)>)/gi, '')}
                     </Card.Text>
+                    <Card.Text>
+                      Duration: {episode['itunes:duration']}
+                    </Card.Text>
+                    <Card.Text>Date: {episode.pubDate}</Card.Text>
                     <Card.Link href={episode.link}>Listen Now</Card.Link>
                   </Card.Body>
                 </Card>
