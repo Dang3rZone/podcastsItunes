@@ -136,7 +136,14 @@ const EpisodesList = () => {
                     <Card.Text>
                       Duration: {episode['itunes:duration']}
                     </Card.Text>
-                    <Card.Text>Date: {episode.pubDate}</Card.Text>
+                    <Card.Text>
+                      Published:{' '}
+                      {new Date(episode.pubDate).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </Card.Text>
                     <Card.Link href={episode.link}>Listen Now</Card.Link>
                   </Card.Body>
                 </Card>
