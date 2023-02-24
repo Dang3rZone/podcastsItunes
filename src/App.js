@@ -8,12 +8,6 @@ const App = () => {
   const [podcasts] = useState([]);
   const [searchTerm] = useState();
 
-  //   const navigate = useNavigate();
-
-  //   const handleSearch = (searchTerm) => {
-  //     setSearchTerm(searchTerm);
-  //   };
-
   const filteredPodcasts = podcasts.filter((podcast) =>
     podcast.title.label.includes(searchTerm.toLowerCase())
   );

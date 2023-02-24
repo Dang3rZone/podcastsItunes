@@ -9,6 +9,8 @@ const EpisodesList = () => {
   const [podcast, setPodcast] = useState({});
   const [episodes, setEpisodes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentEpisode, setCurrentEpisode] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const { trackId } = useParams();
   const episodesToShow = episodes.slice(0, 8);
 
@@ -17,8 +19,8 @@ const EpisodesList = () => {
       try {
         setLoading(true);
 
-        const cachedPodcast = localStorage.getItem(`podcast-${trackId}`);
-        const cachedEpisodes = localStorage.getItem(`episodes-${trackId}`);
+        const cachedPodcast = sessionStorage.getItem(`podcast-${trackId}`);
+        const cachedEpisodes = sessionStorage.getItem(`episodes-${trackId}`);
         if (cachedPodcast && cachedEpisodes) {
           const parsedPodcast = JSON.parse(cachedPodcast);
           const parsedEpisodes = JSON.parse(cachedEpisodes);
@@ -46,7 +48,7 @@ const EpisodesList = () => {
         const podcastData = prettyToJSON.results;
 
         setPodcast(podcastData[0]);
-        console.log('podcast', podcastData);
+
         const finalData = prettyToJSON.results[0].feedUrl;
 
         const responseXML = await fetch(
@@ -62,7 +64,6 @@ const EpisodesList = () => {
           })
           .then((x) => {
             if (x && x.contents) {
-              // check if x exists and has a contents property
               const json = xml2js.parseStringPromise(x.contents);
 
               return json;
@@ -71,15 +72,13 @@ const EpisodesList = () => {
             }
           });
 
-        console.log('episodes', responseXML.rss.channel[0].item);
-
-        // localStorage.setItem(
-        //   `episodes-${trackId}`,
-        //   JSON.stringify({
-        //     timestamp: Date.now(),
-        //     data: responseXML.rss.channel[0].item,
-        //   })
-        // );
+        sessionStorage.setItem(
+          `episodes-${trackId}`,
+          JSON.stringify({
+            timestamp: Date.now(),
+            data: responseXML.rss.channel[0].item.slice(0, 20),
+          })
+        );
 
         setEpisodes(responseXML.rss.channel[0].item);
         setLoading(false);
@@ -90,10 +89,14 @@ const EpisodesList = () => {
     };
 
     fetchEpisodes();
+    window.scrollTo(0, 0);
   }, [trackId]);
 
   return (
-    <>
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ minHeight: '100vh' }}
+    >
       {loading ? (
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Fetching episodes...</span>
@@ -144,7 +147,24 @@ const EpisodesList = () => {
                         year: 'numeric',
                       })}
                     </Card.Text>
-                    <Card.Link href={episode.link}>Listen Now</Card.Link>
+                    {currentEpisode && currentEpisode.guid === episode.guid ? (
+                      <audio
+                        controls
+                        src={currentEpisode.enclosure[0].$.url}
+                        onEnded={() => setCurrentEpisode(null)}
+                        onPlay={() => setIsPlaying(true)}
+                        onPause={() => setIsPlaying(false)}
+                      >
+                        Your browser does not support the audio element.
+                      </audio>
+                    ) : (
+                      <Card.Link
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => setCurrentEpisode(episode)}
+                      >
+                        {isPlaying ? 'Playing...' : 'Listen Now'}
+                      </Card.Link>
+                    )}
                   </Card.Body>
                 </Card>
               ))}
@@ -152,7 +172,7 @@ const EpisodesList = () => {
           </Row>
         </Container>
       )}
-    </>
+    </div>
   );
 };
 
