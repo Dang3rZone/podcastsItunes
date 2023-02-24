@@ -43,16 +43,16 @@ const PodcastList = () => {
     >
       {isLoading ? (
         <Spinner animation="border" role="status">
-          <span className="visually-hidden">Fetching Podcasts...</span>
+          <span className="visually-hidden">Fetching episodes...</span>
         </Spinner>
       ) : (
         <Container>
-          <Row className="mb-4">
+          <Row className="mt-3 m-4 fixed-top">
             <Col>
               <div className="d-flex justify-content-end">
                 <input
                   type="text"
-                  placeholder="Search Podcasts"
+                  placeholder="Search Podcasts..."
                   value={searchTerm}
                   onChange={handleSearch}
                 />
