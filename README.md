@@ -1,3 +1,15 @@
+# Get the best podcasts!
+
+![plot](./Preview/main.png)
+
+# Ultra fast search!
+
+![plot](./Preview/Search.png)
+
+# See more info about it and even play the episode!
+
+![plot](./Preview/podcast.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
