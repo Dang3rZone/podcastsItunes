@@ -7,6 +7,8 @@ import EpisodeList from './components/EpisodeList';
 const App = () => {
   const [podcasts] = useState([]);
   const [searchTerm] = useState();
+  const podcastListUrl =
+    'https://itunes.apple.com/search?term=podcast&country=US&limit=100';
 
   const filteredPodcasts = podcasts.filter((podcast) =>
     podcast.title.label.includes(searchTerm.toLowerCase())
@@ -24,7 +26,12 @@ const App = () => {
         <Routes>
           <Route
             path="*"
-            element={<PodcastList podcasts={filteredPodcasts} />}
+            element={
+              <PodcastList
+                podcasts={filteredPodcasts}
+                podcastListUrl={podcastListUrl}
+              />
+            }
           />
           <Route path="podcast/:trackId" element={<EpisodeList />} />
         </Routes>

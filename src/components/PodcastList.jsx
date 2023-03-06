@@ -3,7 +3,7 @@ import { Card, Row, Col, Spinner, Container } from 'react-bootstrap';
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import EpisodeList from './EpisodeList';
 
-const PodcastList = () => {
+const PodcastList = ({ podcastListUrl }) => {
   const [podcasts, setPodcasts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const { trackId } = useParams();
@@ -13,7 +13,8 @@ const PodcastList = () => {
     const fetchPodcasts = async () => {
       const response = await fetch(
         `https://api.allorigins.win/get?url=${encodeURIComponent(
-          'https://itunes.apple.com/search?term=podcast&country=US&limit=100'
+          //   'https://itunes.apple.com/search?term=podcast&country=US&limit=100'
+          podcastListUrl
         )}`
       );
 
@@ -26,7 +27,7 @@ const PodcastList = () => {
     };
 
     fetchPodcasts();
-  }, []);
+  }, [podcastListUrl]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
