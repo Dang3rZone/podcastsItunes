@@ -94,7 +94,7 @@ const EpisodesList = () => {
 
   return (
     <div
-      className="d-flex justify-content-center align-items-center"
+      className="d-flex justify-content-center align-items-center mt-5"
       style={{ minHeight: '100vh' }}
     >
       {loading ? (

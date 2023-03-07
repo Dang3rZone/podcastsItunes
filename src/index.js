@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
+import { Navbar, Container, Spinner, Row } from 'react-bootstrap';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import App from './App';
@@ -8,7 +10,14 @@ import App from './App';
 const root = createRoot(document.getElementById('root'));
 
 root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <>
+    <Navbar bg="light" expand="lg">
+      <Container>
+        <Navbar.Brand href="/">Top Podcasts</Navbar.Brand>
+      </Container>
+    </Navbar>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </>
 );
