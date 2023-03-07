@@ -45,40 +45,31 @@ const App = () => {
   });
 
   return (
-    <>
-      {/* <Navbar bg="light" expand="lg">
+    <div
+      className="d-flex justify-content-center align-items-center mt-5"
+      style={{ minHeight: '100vh' }}
+    >
+      {isLoading ? (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Fetching episodes...</span>
+        </Spinner>
+      ) : (
         <Container>
-          <Navbar.Brand href="/">Top Podcasts</Navbar.Brand>
+          <SearchBar handleSearch={handleSearch} searchTerm={searchTerm} />
+          <Row>
+            <Routes>
+              <Route
+                path="*"
+                element={
+                  <PodcastList podcasts={filteredPodcasts} trackId={trackId} />
+                }
+              />
+              <Route path="podcast/:trackId" element={<EpisodeList />} />
+            </Routes>
+          </Row>
         </Container>
-      </Navbar> */}
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: '100vh' }}
-      >
-        {isLoading ? (
-          <Spinner animation="border" role="status">
-            <span className="visually-hidden">Fetching episodes...</span>
-          </Spinner>
-        ) : (
-          <Container>
-            <SearchBar handleSearch={handleSearch} searchTerm={searchTerm} />
-            <Row>
-              {filteredPodcasts.map((podcast) => (
-                <Routes key={podcast.trackId}>
-                  <Route
-                    path="*"
-                    element={
-                      <PodcastList podcast={podcast} trackId={trackId} />
-                    }
-                  />
-                  <Route path="podcast/:trackId" element={<EpisodeList />} />
-                </Routes>
-              ))}
-            </Row>
-          </Container>
-        )}
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 
