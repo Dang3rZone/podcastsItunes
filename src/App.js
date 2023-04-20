@@ -1,5 +1,5 @@
 import { usePodcastData } from './hooks/usedPodcastData';
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Container, Spinner, Row } from 'react-bootstrap';
 import { Routes, Route, useParams } from 'react-router-dom';
 import PodcastList from './components/PodcastList';
@@ -8,17 +8,22 @@ import SearchBar from './components/SearchBar';
 
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const { trackId } = useParams();
+  const { trackId = null } = useParams();
   const { podcasts, isLoading } = usePodcastData();
 
   // Handle Search and Filter
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
+  const handleSearch = useCallback(
+    (event) => {
+      setSearchTerm(event.target.value);
+    },
+    [setSearchTerm]
+  );
 
-  const filteredPodcasts = podcasts.filter((podcast) => {
-    return podcast.trackName.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+  const filteredPodcasts = useMemo(() => {
+    return podcasts.filter((podcast) => {
+      return podcast.trackName.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+  }, [podcasts, searchTerm]);
 
   return (
     <div
