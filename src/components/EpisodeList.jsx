@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { Spinner, Row, Col, Card, Container, Badge } from 'react-bootstrap';
 import { usePodcastEpisodes } from '../hooks/usePodcastEpisodes.js';
+import { useMemo, useRef } from 'react';
 
 const EpisodesList = () => {
   const { trackId } = useParams();
@@ -13,8 +14,8 @@ const EpisodesList = () => {
     setCurrentEpisode,
     setIsPlaying,
   } = usePodcastEpisodes(trackId);
-  const episodesToShow = episodes.slice(0, 8);
-
+  const episodesToShow = useMemo(() => episodes.slice(0, 8), [episodes]);
+  const audioRef = useRef(null);
   return (
     <div
       className="d-flex justify-content-center align-items-center mt-5"
@@ -72,6 +73,7 @@ const EpisodesList = () => {
                     </Card.Text>
                     {currentEpisode && currentEpisode.guid === episode.guid ? (
                       <audio
+                        ref={audioRef}
                         controls
                         src={currentEpisode.enclosure[0].$.url}
                         onEnded={() => setCurrentEpisode(null)}
