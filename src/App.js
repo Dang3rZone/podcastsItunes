@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { usePodcastData } from './hooks/usedPodcastData';
+import React, { useState } from 'react';
 import { Container, Spinner, Row } from 'react-bootstrap';
 import { Routes, Route, useParams } from 'react-router-dom';
 import PodcastList from './components/PodcastList';
@@ -6,36 +7,11 @@ import EpisodeList from './components/EpisodeList';
 import SearchBar from './components/SearchBar';
 
 const App = () => {
-  const [podcasts, setPodcasts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const { trackId } = useParams();
-  const [isLoading, setIsLoading] = useState(true);
-  const podcastListUrl =
-    'https://itunes.apple.com/search?term=podcast&country=US&limit=100';
+  const { podcasts, isLoading } = usePodcastData();
 
-  useEffect(() => {
-    const fetchPodcasts = async () => {
-      const response = await fetch(
-        `https://api.allorigins.win/get?url=${encodeURIComponent(
-          `${podcastListUrl}`
-        )}`
-      );
-      //       .then((response) => {
-      //     if (response.ok) return response.json();
-      //     throw new Error('Network response was not ok.');
-      //   });
-
-      const data = await response.json();
-      //   const prettyData = response.contents.replace(/\n/g, '');
-      const prettyToJSON = JSON.parse(data.contents);
-
-      await setPodcasts(prettyToJSON.results);
-      setIsLoading(false);
-    };
-
-    fetchPodcasts();
-  }, []);
-
+  // Handle Search and Filter
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
